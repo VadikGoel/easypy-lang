@@ -34,6 +34,7 @@ ENV/
 installers/*.spec
 installers/build/
 installers/dist/
+installers/*publish*.bat
 
 # VS Code
 .vscode/

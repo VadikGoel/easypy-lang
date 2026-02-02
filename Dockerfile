@@ -4,7 +4,7 @@ FROM python:3.10-slim
 
 # Metadata
 LABEL maintainer="Vadik Goel <vadikgoel1@gmail.com>"
-LABEL version="2.0.0"
+LABEL version="2.0.1"
 LABEL description="Official container for Easypy Language v2.0"
 
 # Set the working directory directly to /app

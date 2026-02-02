@@ -59,7 +59,7 @@ easypy hello.easy
 
 ## 📚 Documentation
 
-For full documentation, tutorials, and the interactive playground, please check the `docs/` folder included in the repository or visit our [GitHub Repository](https://github.com/VadikGoel/easypy-lang).
+For full documentation, tutorials, and the interactive playground, please check the `docs/` folder included in the repository or visit our [Documentation](https://vadikgoel.github.io/easypy-lang/).
 
 ## 🤝 Contributing
 

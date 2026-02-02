@@ -8,6 +8,7 @@ import re
 class EasypyTranspiler:
     def __init__(self):
         self.indent_level = 0
+        self.context_stack = [] # Stack to track [class, func, other]
         self.in_block = False
         self.source_map = {} # Maps generated python line -> original ep line
         
@@ -160,6 +161,7 @@ class EasypyTranspiler:
         while raw_line.startswith("}"):
             self.indent_level -= 1
             if self.indent_level < 0: self.indent_level = 0
+            if self.context_stack: self.context_stack.pop()
             raw_line = raw_line[1:].strip()
             
         # If line was just "}", it is now empty. Return None to skip outputting a blank/garbage line.
@@ -212,19 +214,34 @@ class EasypyTranspiler:
         # 3. Functions
         if raw_line.startswith("func ") and raw_line.endswith("{"):
             defn = raw_line[5:-1].strip()
+            
+            # Auto-inject 'self' if inside a class
+            if self.context_stack and self.context_stack[-1] == 'class':
+                parts = defn.split("(", 1)
+                name = parts[0]
+                args = parts[1][:-1] if len(parts) > 1 else ""
+                
+                if args.strip():
+                    defn = f"{name}(self, {args})"
+                else:
+                    defn = f"{name}(self)"
+
             self.indent_level += 1
+            self.context_stack.append('func')
             return f"{indent}def {defn}:"
         
         # 3b. Async Functions
         if raw_line.startswith("async func ") and raw_line.endswith("{"):
             defn = raw_line[11:-1].strip()
             self.indent_level += 1
+            self.context_stack.append('func')
             return f"{indent}async def {defn}:"
 
         # 4. Classes
         if raw_line.startswith("class ") and raw_line.endswith("{"):
             defn = raw_line[6:-1].strip()
             self.indent_level += 1
+            self.context_stack.append('class')
             return f"{indent}class {defn}:"
 
         # 5. Logic
@@ -233,15 +250,18 @@ class EasypyTranspiler:
             # Handle if(x) vs if x
             if condition.startswith("(") and condition.endswith(")"): condition = condition
             self.indent_level += 1
+            self.context_stack.append('block')
             return f"{indent}if {condition}:"
         
         if raw_line.startswith("elif") and raw_line.endswith("{"):
             condition = raw_line[4:-1].strip()
             self.indent_level += 1
+            self.context_stack.append('block')
             return f"{indent}elif {condition}:"
 
         if raw_line.startswith("else") and raw_line.endswith("{"):
             self.indent_level += 1
+            self.context_stack.append('block')
             return f"{indent}else:"
 
         # 6. Loops
@@ -249,22 +269,26 @@ class EasypyTranspiler:
         if loop_match:
             count = loop_match.group(1)
             self.indent_level += 1
+            self.context_stack.append('block')
             return f"{indent}for _ in range({count}):"
         
         if raw_line.startswith("while") and raw_line.endswith("{"):
             condition = raw_line[5:-1].strip()
             self.indent_level += 1
+            self.context_stack.append('block')
             return f"{indent}while {condition}:"
             
         if raw_line.startswith("for ") and raw_line.endswith("{"):
             condition = raw_line[3:-1].strip()
             self.indent_level += 1
+            self.context_stack.append('block')
             return f"{indent}for {condition}:"
 
         # 7. Generic Block
         if raw_line.endswith("{"):
              clean_line = raw_line[:-1].strip()
              self.indent_level += 1
+             self.context_stack.append('block')
              return f"{indent}{clean_line}:"
 
         # 8. Standard Line
