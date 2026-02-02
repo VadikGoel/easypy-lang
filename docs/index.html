@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easypy | Limitless Coding, Zero Headache</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { 500: '#10b981', 400: '#34d399' },
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'blob': 'blob 10s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            background-color: #020617; 
+            background-image: radial-gradient(at 50% 0%, rgba(120, 119, 198, 0.1) 0px, transparent 50%),
+                            radial-gradient(at 100% 0%, rgba(74, 222, 128, 0.1) 0px, transparent 50%);
+        }
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(135deg, #34d399 0%, #3b82f6 100%);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .code-window {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+    </style>
+</head>
+<body class="text-white antialiased overflow-x-hidden selection:bg-brand-500 selection:text-black">
+    
+    <!-- Animated Background Blobs -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-blob"></div>
+        <div class="absolute top-0 right-1/4 w-96 h-96 bg-brand-500/20 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+        <div class="absolute bottom-0 left-1/3 w-96 h-96 bg-blue-500/20 rounded-full mix-blend-screen filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-card border-b-0 top-0 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <span class="text-2xl font-bold tracking-tighter text-white">Easypy<span class="text-brand-400">.</span></span>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#features" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Features</a>
+                <a href="#comparison" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Compare</a>
+                <a href="documentation/index.html" class="px-5 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-sm font-medium transition-all">Docs</a>
+                <a href="https://github.com" class="px-5 py-2 rounded-full bg-brand-500 hover:bg-brand-400 text-black font-bold text-sm transition-all shadow-lg shadow-brand-500/20">Download</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center pt-20 relative px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
+            
+            <div class="flex-1 text-center md:text-left z-10" data-aos="fade-up">
+                <div class="inline-flex items-center px-4 py-2 rounded-full glass-card border-brand-500/30 text-brand-400 text-xs font-bold uppercase tracking-widest mb-6 glow">
+                    <span class="w-2 h-2 rounded-full bg-brand-400 mr-2 animate-pulse"></span>
+                    v2.1 Stable Release
+                </div>
+                <h1 class="text-6xl md:text-8xl font-black tracking-tight leading-none mb-6">
+                    Code like<br>
+                    <span class="text-gradient">you speak.</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-slate-400 mb-10 leading-relaxed max-w-2xl mx-auto md:mx-0">
+                    The power of Python, the simplicity of English.
+                    Build web apps, scripts, and tools <span class="text-white font-semibold">10x faster</span> without the syntax headache.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
+                    <a href="documentation/index.html" class="px-8 py-4 bg-brand-500 hover:bg-brand-400 text-black rounded-xl font-bold text-lg transition-all transform hover:scale-105 shadow-[0_0_40px_rgba(52,211,153,0.3)]">
+                        Get Started
+                    </a>
+                    <a href="demo.html" class="px-8 py-4 glass-card hover:bg-white/5 text-white rounded-xl font-bold text-lg transition-all border border-white/10">
+                        Viewing Demo
+                    </a>
+                </div>
+            </div>
+
+            <div class="flex-1 w-full max-w-xl relative" data-aos="fade-left" data-aos-delay="200">
+                <div class="absolute -inset-1 bg-gradient-to-r from-brand-500 to-blue-500 rounded-2xl blur opacity-30 animate-pulse"></div>
+                <div class="code-window rounded-2xl overflow-hidden relative">
+                    <div class="flex items-center gap-2 px-4 py-3 bg-slate-900 border-b border-slate-800">
+                        <div class="flex gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <span class="text-xs text-slate-500 font-mono ml-4">hello_world.ep</span>
+                    </div>
+                    <div class="p-6 font-mono text-sm md:text-base leading-loose">
+                        <div class="flex"><span class="text-slate-500 w-8 select-none">1</span><span class="text-purple-400">use</span> <span class="text-yellow-300">system</span></div>
+                        <div class="flex"><span class="text-slate-500 w-8 select-none">2</span><span class="text-purple-400">use</span> <span class="text-yellow-300">gui</span></div>
+                        <div class="flex"><span class="text-slate-500 w-8 select-none">3</span></div>
+                        <div class="flex"><span class="text-slate-500 w-8 select-none">4</span><span class="text-blue-400">func</span> <span class="text-yellow-200">main</span>() {</div>
+                        <div class="flex"><span class="text-slate-500 w-8 select-none">5</span>    <span class="text-purple-400">log</span> <span class="text-green-300">"Hello from Easypy!"</span></div>
+                        <div class="flex"><span class="text-slate-500 w-8 select-none">6</span>    <span class="text-blue-400">var</span> <span class="text-red-300">name</span> = <span class="text-purple-400">input</span>(<span class="text-green-300">"Your name?"</span>)</div>
+                        <div class="flex"><span class="text-slate-500 w-8 select-none">7</span>    <span class="text-yellow-300">gui</span>.<span class="text-blue-300">msgbox</span>(<span class="text-green-300">"Welcome "</span> + <span class="text-red-300">name</span>)</div>
+                        <div class="flex"><span class="text-slate-500 w-8 select-none">8</span>}</div>
+                    </div>
+                </div>
+                <!-- Floating Elements -->
+                <div class="absolute -right-10 -bottom-10 glass-card p-4 rounded-xl shadow-2xl animate-float-delayed hidden md:block">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-400">Status</div>
+                            <div class="text-sm font-bold text-white">Compiled Successfully</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section id="features" class="py-24 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-20" data-aos="fade-up">
+                <h2 class="text-4xl md:text-5xl font-bold mb-6">Built for speed.</h2>
+                <p class="text-slate-400 max-w-2xl mx-auto text-lg">Easypy isn't just a toy. It's a full production-ready environment that transpiles to optimized Python bytecode.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="glass-card p-8 rounded-2xl hover:bg-white/5 transition-all group" data-aos="fade-up" data-aos-delay="0">
+                    <div class="w-14 h-14 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Blazing Fast</h3>
+                    <p class="text-slate-400 leading-relaxed">
+                        Compiles to raw Python. No interpreter overhead. Your code runs as fast as the underlying Python engine allow, which is heavily optimized.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card p-8 rounded-2xl hover:bg-white/5 transition-all group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-14 h-14 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Python Interop</h3>
+                    <p class="text-slate-400 leading-relaxed">
+                        Access 300,000+ Python libraries. Use `requests`, `numpy`, `pandas`, or `pygame` directly in Easypy with zero configuration.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-card p-8 rounded-2xl hover:bg-white/5 transition-all group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-14 h-14 rounded-xl bg-brand-500/10 flex items-center justify-center text-brand-400 mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">VS Code Ready</h3>
+                    <p class="text-slate-400 leading-relaxed">
+                        Comes with a pro-grade VS Code extension. Syntax highlighting, snippets, and themes out of the box.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section id="comparison" class="py-24 bg-slate-900/50">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div data-aos="fade-right">
+                    <h2 class="text-4xl font-bold mb-6">Syntax Comparison</h2>
+                    <p class="text-slate-400 mb-8 max-w-md">See how much cleaner your code can be. Easypy removes the noise so you can focus on logic.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 text-slate-300">
+                            <div class="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 text-xs">✓</div>
+                            <span>No self parameter in classes</span>
+                        </div>
+                        <div class="flex items-center gap-4 text-slate-300">
+                            <div class="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 text-xs">✓</div>
+                            <span>Braces {} for clear blocks</span>
+                        </div>
+                        <div class="flex items-center gap-4 text-slate-300">
+                            <div class="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center text-green-500 text-xs">✓</div>
+                            <span>Output binaries (.exe) easily</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6" data-aos="fade-left">
+                    <!-- Python Block -->
+                    <div class="rounded-xl overflow-hidden border border-slate-700 opacity-60 hover:opacity-100 transition-opacity">
+                        <div class="bg-slate-800 px-4 py-2 text-xs font-mono text-slate-400 flex justify-between">
+                            <span>python_example.py</span>
+                            <span>Traditional</span>
+                        </div>
+                        <div class="bg-slate-950 p-4 font-mono text-sm text-slate-400">
+                            <span class="text-blue-400">import</span> sys<br>
+                            <span class="text-blue-400">def</span> <span class="text-yellow-200">greet</span>(name):<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-blue-400">print</span>(f<span class="text-green-300">"Hello {name}"</span>)<br>
+                            <span class="text-blue-400">if</span> __name__ == <span class="text-green-300">"__main__"</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;greet(<span class="text-green-300">"User"</span>)
+                        </div>
+                    </div>
+
+                    <!-- Easypy Block -->
+                    <div class="rounded-xl overflow-hidden border border-brand-500/50 shadow-2xl shadow-brand-500/10 transform scale-105">
+                        <div class="bg-brand-900/20 px-4 py-2 text-xs font-mono text-brand-300 flex justify-between border-b border-brand-500/20">
+                            <span>easypy_example.ep</span>
+                            <span>Modern</span>
+                        </div>
+                        <div class="bg-slate-950 p-4 font-mono text-sm text-slate-200">
+                            <span class="text-purple-400">func</span> <span class="text-yellow-200">greet</span>(<span class="text-red-300">name</span>) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-purple-400">log</span> <span class="text-green-300">"Hello "</span> + <span class="text-red-300">name</span><br>
+                            }<br>
+                            greet(<span class="text-green-300">"User"</span>)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/5 bg-slate-950 pt-20 pb-10">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h2 class="text-2xl font-bold mb-6">Ready to start?</h2>
+            <a href="documentation/index.html" class="inline-block px-8 py-3 bg-white text-black font-bold rounded-full hover:bg-slate-200 transition-colors">Read the Documentation</a>
+            <p class="mt-10 text-slate-600 text-sm">&copy; 2026 Easypy Project. Open Source.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+    </script>
+</body>
+</html>

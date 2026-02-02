@@ -1,0 +1,46 @@
+# Styling & Banner Example in Easypy
+
+banner("Welcome to Easypy Styling!", "box")
+
+# Using the style function for colored and formatted text
+title = style("Easypy Language", color="cyan", bold=true)
+print(title)
+
+# Different banner styles
+print("")
+banner("Beautiful Box Style", "box")
+print("")
+
+banner("Stars Style", "stars")
+print("")
+
+banner("Dashes Style", "dashes")
+print("")
+
+banner("Arrows Style", "arrows")
+print("")
+
+# Colored outputs
+red_text = style("This is RED", color="red", bold=true)
+green_text = style("This is GREEN", color="green")
+blue_text = style("This is BLUE", color="bright_blue", bold=true)
+cyan_text = style("This is CYAN", color="cyan", underline=true)
+
+print(red_text)
+print(green_text)
+print(blue_text)
+print(cyan_text)
+
+# Creating a simple report with styling
+print("")
+banner("Project Report", "box")
+name = style("Easypy", color="bright_cyan", bold=true)
+version = style("1.0.0", color="bright_green", bold=true)
+print("Project: {name}")
+print("Version: {version}")
+print("")
+print("Features:")
+print(style("✓ Simple Syntax", color="green"))
+print(style("✓ Built-in Modules", color="green"))
+print(style("✓ Styling Support", color="green"))
+print(style("✓ pip Integration", color="green"))

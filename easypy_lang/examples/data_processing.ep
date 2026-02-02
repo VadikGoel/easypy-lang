@@ -1,0 +1,28 @@
+# 📊 Data Processing Example
+
+use file
+use data
+
+# Create sample data file if needed
+file_write("sample_data.txt", "Name,Age,Score\nAlice,25,95\nBob,22,87\nCharlie,24,92")
+
+# Read file
+content = file_read("sample_data.txt")
+print("File content:")
+print(content)
+
+# Process data
+students = [Alice, Bob, Charlie]
+scores = [95, 87, 92]
+
+total = sum(scores)
+average = total / 3
+
+print("\nAnalysis:")
+print("Total students: 3")
+print("Total score: {total}")
+print("Average score: {average}")
+
+# Save results
+file_write("results.txt", "Average Score: {average}")
+print("\nResults saved to results.txt")

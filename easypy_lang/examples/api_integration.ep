@@ -1,0 +1,15 @@
+# 🌐 API Integration Example
+
+use api
+
+print("🌐 API Integration Example")
+print("Fetching data from public APIs...\n")
+
+# Fetch GitHub user data
+print("Fetching GitHub user data...")
+# data = api_get("https://api.github.com/users/github")
+# print("Repository: {data}")
+
+print("\n✅ API examples complete!")
+print("Uncomment the api_get calls to use real APIs")
+print("Make sure you have the 'requests' library installed")

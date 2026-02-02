@@ -1,0 +1,11 @@
+
+print("Starting Debug Test...")
+
+# This should work
+x = 10
+
+# This should FAIL and show the correct line number (Source Mapping Test)
+# Line 8 is the error
+y = 10 / 0 
+
+print("Should not reach here")

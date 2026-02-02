@@ -1,0 +1,14 @@
+# 🌟 Hello World - Your First Easypy Program!
+
+# Variables
+name = "Alice"
+age = 20
+
+# Print output with interpolation
+print("Hello, {name}!")
+print("Welcome to Easypy Language!")
+print("You are {age} years old")
+
+# Simple math
+birth_year = 2004
+print("You were probably born in {birth_year}")

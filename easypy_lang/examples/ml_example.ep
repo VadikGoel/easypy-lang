@@ -1,0 +1,20 @@
+# 🤖 Machine Learning Example
+
+use ml
+
+print("🤖 Machine Learning Example")
+print("Creating a classifier model...")
+
+model = ml_classifier()
+print("✅ Model created!")
+
+# Sample training data
+features = [[5.1, 3.5], [7.0, 4.2], [6.3, 3.0]]
+labels = [0, 1, 0]
+
+print("\nSample training data:")
+print("Features: {features}")
+print("Labels: {labels}")
+
+print("\n✅ ML example complete!")
+print("Note: Full training requires pandas and more setup")

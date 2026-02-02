@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Easypy Bible | Zero to Hero</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        glass: { 
+                            50: 'rgba(255, 255, 255, 0.05)',
+                            100: 'rgba(255, 255, 255, 0.1)',
+                            200: 'rgba(255, 255, 255, 0.2)',
+                            900: 'rgba(15, 23, 42, 0.8)'
+                        },
+                        brand: { 400: '#34d399', 500: '#10b981', 600: '#059669' }
+                    },
+                    backdropBlur: { 'xs': '2px' }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: #020617;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.08), transparent 25%), 
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08), transparent 25%);
+            color: #e2e8f0;
+        }
+
+        /* Pro Typography */
+        h1, h2, h3 { letter-spacing: -0.03em; }
+        code { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Glass Components */
+        .glass-sidebar {
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.4));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s;
+        }
+        .glass-card:hover { transform: translateY(-2px); border-color: rgba(52, 211, 153, 0.2); }
+
+        .sidebar-link {
+             display: flex;
+             align-items: center;
+             padding: 0.5rem 0.75rem;
+             font-size: 0.875rem;
+             color: #cbd5e1;
+             border-radius: 0.375rem;
+             transition: all 0.2s;
+             position: relative;
+        }
+        .sidebar-link:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .sidebar-link.active { background: rgba(52, 211, 153, 0.1); color: #34d399; font-weight: 600; }
+        .sidebar-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+            background: #34d399;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            background: rgba(52, 211, 153, 0.1);
+            color: #34d399;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            margin-right: 0.75rem;
+        }
+
+        /* Syntax Highlighting overrides */
+        pre { border: 1px solid rgba(255,255,255,0.1) !important; border-radius: 0.75rem !important; background: #0f172a !important; }
+        
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #34d399;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Top Bar -->
+    <header class="fixed top-0 w-full h-16 glass-sidebar z-50 flex items-center justify-between px-6 border-b border-white/5">
+        <a href="../index.html" class="flex items-center gap-3 hover:opacity-80 transition">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-400 to-blue-500 flex items-center justify-center font-bold text-black">E</div>
+            <span class="font-bold text-xl tracking-tight">Easypy <span class="text-xs text-slate-500 font-normal ml-2">Legacy Documentation</span></span>
+        </a>
+        <div class="flex items-center gap-4">
+            <span class="px-2 py-1 rounded bg-brand-500/10 text-brand-400 text-xs font-mono border border-brand-500/20">v2.0 Stable</span>
+        </div>
+    </header>
+
+    <div class="flex pt-16 min-h-screen">
+        
+        <!-- Sidebar -->
+        <aside class="fixed w-72 h-[calc(100vh-4rem)] overflow-y-auto glass-sidebar z-40 hidden lg:block scrollbar-hide py-6 px-4">
+            
+            <div class="mb-8">
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 pl-2">Start Here</p>
+                <div class="space-y-0.5">
+                    <a href="#intro" class="sidebar-link">Introduction</a>
+                    <a href="#installation" class="sidebar-link">Installation Process</a>
+                    <a href="#first-app" class="sidebar-link">Your First App</a>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 pl-2">Core Concepts</p>
+                <div class="space-y-0.5">
+                    <a href="#basics-vars" class="sidebar-link">Variables (Boxes)</a>
+                    <a href="#basics-logic" class="sidebar-link">Logic (Decisions)</a>
+                    <a href="#basics-funcs" class="sidebar-link">Functions (Recipes)</a>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 pl-2">Library Reference</p>
+                <div class="space-y-0.5">
+                    <a href="#lib-gui" class="sidebar-link"><i class="fas fa-window-maximize w-5"></i> GUI / Windows</a>
+                    <a href="#lib-web" class="sidebar-link"><i class="fas fa-globe w-5"></i> Web & Internet</a>
+                    <a href="#lib-files" class="sidebar-link"><i class="fas fa-file w-5"></i> File System</a>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 pl-2">Advanced</p>
+                <div class="space-y-0.5">
+                    <a href="#interop" class="sidebar-link text-brand-400">Python Interop</a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 lg:pl-72 w-full">
+            <div class="max-w-4xl mx-auto px-6 py-12 md:px-12">
+                
+                <!-- Introduction -->
+                <section id="intro" class="mb-20">
+                    <h1 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 mb-6 leading-tight">
+                        Coding for <br>Non-Computer People.
+                    </h1>
+                    <p class="text-xl text-slate-300 leading-relaxed mb-8">
+                        Most languages assume you know how a CPU works. Easypy assumes you want to build cool stuff 
+                        without a PhD in Computer Science. It reads like English, but runs like a powerhouse.
+                    </p>
+                </section>
+
+                <!-- Installation -->
+                <section id="installation" class="mb-20">
+                    <h2 class="text-3xl font-bold text-white mb-8 border-b border-white/10 pb-4">The Installation Process</h2>
+                    
+                    <!-- PYPI BADGE -->
+                    <div class="glass-card p-6 rounded-xl mb-8 border-l-4 border-brand-500 bg-brand-900/10">
+                        <div class="flex items-center justify-between flex-wrap gap-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-white mb-1"><i class="fab fa-python text-brand-400 mr-2"></i>Official PyPI Release</h3>
+                                <p class="text-slate-400 text-sm">
+                                    Already have Python? Install Easypy in 3 seconds.
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <code class="bg-black/50 px-4 py-3 rounded-lg text-brand-400 font-mono select-all">pip install easypy-lang</code>
+                                <a href="https://pypi.org/project/easypy-lang/" target="_blank" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg text-white text-sm font-bold transition">
+                                    View on <i class="fas fa-box ml-1"></i> PyPI
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-slate-400 mb-8">
+                        We have automated everything. You don't need to touch the command line if you follow these steps exactly.
+                    </p>
+
+                    <div class="space-y-8">
+                        <!-- Step 1 -->
+                        <div class="glass-card p-8 rounded-2xl relative overflow-hidden">
+                            <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl font-bold">1</div>
+                            <h3 class="text-xl font-bold text-white mb-4 flex items-center"><span class="step-number">1</span>Install Python</h3>
+                            <p class="text-slate-300 mb-4">
+                                This is the engine. Without it, the car doesn't move.
+                            </p>
+                            <a href="https://python.org/downloads" target="_blank" class="inline-flex items-center px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-sm font-semibold transition">
+                                <i class="fas fa-download mr-2"></i> Download Python 3.10+
+                            </a>
+                            <p class="text-xs text-brand-400 mt-3 font-mono">IMPORTANT: Check the box "Add Python to PATH" during installation.</p>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="glass-card p-8 rounded-2xl relative overflow-hidden ring-1 ring-brand-500/50">
+                            <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl font-bold text-brand-500">2</div>
+                            <h3 class="text-xl font-bold text-white mb-4 flex items-center"><span class="step-number">2</span>Run the Installer</h3>
+                            <p class="text-slate-300 mb-4">
+                                Go to the <code>installers</code> folder inside the project. You will see a file named <code>1_install_global.bat</code>.
+                            </p>
+                            <div class="bg-black/40 p-4 rounded-lg font-mono text-sm text-slate-300 border border-white/10">
+                                📂 Project Folder<br>
+                                └── 📂 installers<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;└── ⚙️ 1_install_global.bat  <-- Double Click This!
+                            </div>
+                            <p class="text-slate-400 mt-4 text-sm">
+                                A black window will appear. It is installing the libraries. Wait for it to close.
+                            </p>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="glass-card p-8 rounded-2xl relative overflow-hidden">
+                            <h3 class="text-xl font-bold text-white mb-4 flex items-center"><span class="step-number">3</span>Install VS Code Extension</h3>
+                            <p class="text-slate-300 mb-4">
+                                To get colors: Drag the file <code>easypy-extension.vsix</code> directly into your VS Code window.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- First App -->
+                <section id="first-app" class="mb-20">
+                    <h2 class="text-3xl font-bold text-white mb-8 border-b border-white/10 pb-4">Your First App</h2>
+                    <p class="text-slate-400 mb-6">Create a new file named <code>hello.ep</code> and convert it.</p>
+                    
+                    <div class="glass-card p-6 rounded-xl mb-6">
+                        <pre><code class="language-python"># Writes text to the black console window
+log "Hello, making code is easy."
+
+# Simple Math
+log 5 + 5</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-white mb-4">How to Run It</h3>
+                    <p class="text-slate-300">
+                        Open your terminal (in VS Code: `Ctrl + ~`) and type:
+                    </p>
+                <!-- FIRST APP SECTION ENDS HERE -->
+                
+                <!-- CORE CONCEPTS (ADDED BY REQUEST) -->
+                <section id="basics-vars" class="mb-20 pt-10 border-t border-white/5">
+                    <h2 class="text-3xl font-bold text-white mb-8 border-b border-white/10 pb-4">Core Concept: Variables</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <p class="text-slate-400 mb-4">
+                                Variables are boxes. You put data in, you take data out.
+                                In Easypy, you can use the magic word <code class="text-brand-400">var</code> for everything contextually.
+                            </p>
+                            <div class="glass-card p-6 rounded-xl">
+                                <pre><code class="language-python"># The "Easy" Way
+var name = "John"
+var age = 25
+var is_happy = true
+
+log name</code></pre>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-slate-400 mb-4">
+                                Or handle types strictly if you prefer control.
+                            </p>
+                            <div class="glass-card p-6 rounded-xl">
+                                <pre><code class="language-python"># The "Strict" Way
+string city = "New York"
+int score = 100
+float pi = 3.14
+
+log score + 50</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="basics-logic" class="mb-20">
+                    <h2 class="text-3xl font-bold text-white mb-8 border-b border-white/10 pb-4">Core Concept: Logic & Loops</h2>
+                    
+                    <h3 class="text-xl font-bold text-white mb-4">Making Decisions (If/Else)</h3>
+                    <p class="text-slate-400 mb-4">
+                        Code needs to make choices. We use `if` and `else` blocks. Note the braces `{ }`.
+                    </p>
+                    <div class="glass-card p-6 rounded-xl mb-8">
+                        <pre><code class="language-python">var money = 50
+
+if money > 100 {
+    log "You are rich!"
+} else {
+    log "Keep working!"
+}</code></pre>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-white mb-4">Repeating Things (Loops)</h3>
+                    <p class="text-slate-400 mb-4">
+                        Easypy has a special human-readable loop.
+                    </p>
+                    <div class="glass-card p-6 rounded-xl">
+                        <pre><code class="language-python"># Repeat 5 times
+loop 5 times {
+    log "I am repeating myself."
+}
+
+# Standard Python-style loop
+for i in range(10) {
+    log i
+}</code></pre>
+                    </div>
+                </section>
+
+                <section id="basics-funcs" class="mb-20">
+                    <h2 class="text-3xl font-bold text-white mb-8 border-b border-white/10 pb-4">Core Concept: Functions</h2>
+                    <p class="text-slate-400 mb-6">
+                        Functions are reusable recipes. Use `func` to define one.
+                    </p>
+                    
+                    <div class="glass-card p-6 rounded-xl mb-6">
+                        <pre><code class="language-python"># 1. Define the function
+func calculate_area(width, height) {
+    var area = width * height
+    return area
+}
+
+# 2. Use it
+var my_room = calculate_area(10, 12)
+log "Room size: " + my_room</code></pre>
+                    </div>
+                </section>
+
+                <!-- Core Library -->
+                <section id="basics" class="mb-20">
+                    <h2 class="text-3xl font-bold text-white mb-8 border-b border-white/10 pb-4">Standard Library</h2>
+                    <p class="text-slate-400 mb-8">
+                        Easypy comes with "batteries included". You don't need to download anything else to make windows, websites, or files.
+                    </p>
+
+                    <!-- GUI -->
+                    <div id="lib-gui" class="mb-12">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-2 bg-blue-500/20 rounded-lg text-blue-400"><i class="fas fa-window-maximize"></i></div>
+                            <h3 class="text-2xl font-bold text-white">GUI Module (Windows)</h3>
+                        </div>
+                        <p class="text-slate-400 mb-4">Create real desktop applications.</p>
+                        
+                        <div class="glass-card p-6 rounded-xl">
+                            <pre><code class="language-python">use gui
+
+# 1. Setup the window
+var app = gui.create_app("My App", 500, 400)
+
+# 2. Add elements
+gui.label(app, "Welcome to my program")
+gui.textbox(app, "Type your name...")
+
+# 3. Create a button function
+func click_me() {
+    log "Button was clicked!"
+}
+gui.button(app, "Press Me", click_me)
+
+# 4. Launch
+gui.show(app)</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Web -->
+                    <div id="lib-web" class="mb-12">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-2 bg-purple-500/20 rounded-lg text-purple-400"><i class="fas fa-globe"></i></div>
+                            <h3 class="text-2xl font-bold text-white">Web Module</h3>
+                        </div>
+                        <p class="text-slate-400 mb-4">Interact with the internet.</p>
+                        
+                        <div class="glass-card p-6 rounded-xl">
+                            <pre><code class="language-python">use web
+
+# Open a website in Chrome/Edge
+web.open("https://google.com")
+
+# Get text from a website (Scraping)
+var data = web.get("https://example.com")
+log data</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Files -->
+                    <div id="lib-files" class="mb-12">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-2 bg-yellow-500/20 rounded-lg text-yellow-400"><i class="fas fa-file-alt"></i></div>
+                            <h3 class="text-2xl font-bold text-white">File Module</h3>
+                        </div>
+                        <p class="text-slate-400 mb-4">Save data to your hard drive.</p>
+                        
+                        <div class="glass-card p-6 rounded-xl">
+                            <pre><code class="language-python">use file
+
+# Create a new file
+file.create("notes.txt", "This is my first note.")
+
+# Add more text to the bottom
+file.append("notes.txt", "\nI am learning fast.")
+
+# Read it back
+var content = file.read("notes.txt")
+log content</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Advanced Interop -->
+                <section id="interop" class="mb-20">
+                    <h2 class="text-3xl font-bold text-white mb-8 border-b border-white/10 pb-4">Unlimited Power (Python Interop)</h2>
+                    <div class="glass-card p-8 rounded-2xl border border-brand-500/30 bg-brand-500/5">
+                        <h3 class="text-xl font-bold text-brand-400 mb-4">The "Secret Weapon"</h3>
+                        <p class="text-slate-300 mb-6">
+                            Easypy is built on Python. This means you can use <strong>ANY</strong> Python library that exists. Machine learning? AI? Games? Yes.
+                        </p>
+                        
+                        <div class="bg-black/60 p-4 rounded-lg mb-6">
+                            <code class="text-sm text-slate-400"># In terminal: pip install colorama</code>
+                        </div>
+
+                        <pre><code class="language-python"># Use the library directly
+use colorama
+
+# Create a variable from the library
+var red = colorama.Fore.RED
+var reset = colorama.Style.RESET_ALL
+
+log red + "This text is RED!" + reset</code></pre>
+                    </div>
+                </section>
+                
+                <footer class="text-center text-slate-600 pb-20 pt-10 border-t border-white/5">
+                    <p class="text-sm font-mono">Easypy v2.0 - Documentation</p>
+                </footer>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script>
+        const navLinks = document.querySelectorAll('.sidebar-link');
+        const sections = document.querySelectorAll('section, div[id^="lib-"]');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

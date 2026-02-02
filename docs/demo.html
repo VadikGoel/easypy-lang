@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easypy Playground</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        body { background: #020617; color: white; font-family: 'Inter', sans-serif; }
+        .editor { font-family: 'JetBrains Mono', monospace; }
+        .glass-panel { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+    </style>
+</head>
+<body class="h-screen flex flex-col p-6 overflow-hidden bg-slate-950">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+        <a href="index.html" class="flex items-center gap-2 text-slate-400 hover:text-white transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Back to Home
+        </a>
+        <h1 class="text-xl font-bold">Interactive Demo</h1>
+        <div class="w-20"></div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 h-full min-h-0">
+        
+        <!-- Editor -->
+        <div class="glass-panel rounded-xl flex flex-col overflow-hidden">
+            <div class="bg-slate-900/80 px-4 py-2 border-b border-white/5 flex justify-between items-center">
+                <span class="text-xs font-mono text-slate-400">main.ep</span>
+                <button onclick="runCode()" class="px-4 py-1 bg-green-500 hover:bg-green-400 text-black text-xs font-bold rounded transition">
+                    ▶ Run Code
+                </button>
+            </div>
+            <textarea id="code" class="flex-1 bg-transparent p-4 text-sm resize-none focus:outline-none text-slate-300 editor spellcheck-false" spellcheck="false">use gui
+
+log "Starting System..."
+
+func on_click() {
+    log "Action Confirmed!"
+    gui.msgbox("You approved the transaction.")
+}
+
+var window = gui.create_app("Control Panel", 400, 300)
+gui.label(window, "Status: Online")
+gui.button(window, "Approve", on_click)
+
+gui.show(window)
+</textarea>
+        </div>
+
+        <!-- Terminal / Output -->
+        <div class="glass-panel rounded-xl flex flex-col overflow-hidden relative">
+            <div class="bg-slate-900/80 px-4 py-2 border-b border-white/5">
+                <span class="text-xs font-mono text-slate-400">Terminal Output</span>
+            </div>
+            <div id="terminal" class="flex-1 p-4 font-mono text-sm space-y-2 overflow-y-auto">
+                <div class="text-slate-500">Easypy Environment v2.1.0 loaded.</div>
+                <div class="text-slate-500">Ready to execute.</div>
+            </div>
+
+            <!-- Fake Overlay Window -->
+            <div id="fake-window" class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 bg-slate-800 rounded-lg border border-slate-600 shadow-2xl">
+                <div class="bg-slate-700 px-3 py-1 text-xs text-white rounded-t-lg flex justify-between">
+                    <span>Control Panel</span>
+                    <span class="cursor-pointer hover:text-red-400" onclick="closeWindow()">x</span>
+                </div>
+                <div class="p-4 flex flex-col gap-3">
+                    <div class="text-slate-300 text-sm text-center">Status: Online</div>
+                    <button onclick="triggerMsg()" class="w-full py-1 bg-slate-600 hover:bg-slate-500 text-white text-xs rounded border border-slate-500">Approve</button>
+                </div>
+            </div>
+
+             <!-- Fake MsgBox -->
+             <div id="fake-msgbox" class="hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-56 bg-white text-black rounded shadow-2xl p-4 text-center z-50">
+                <div class="mb-4 text-sm font-bold">You approved the transaction.</div>
+                <button onclick="closeMsg()" class="px-4 py-1 bg-blue-500 text-white text-xs rounded">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function runCode() {
+            const term = document.getElementById('terminal');
+            term.innerHTML += '<div class="text-green-400 mt-2">> Compiling...</div>';
+            
+            setTimeout(() => {
+                term.innerHTML += '<div class="text-slate-300">Starting System...</div>';
+                document.getElementById('fake-window').classList.remove('hidden');
+            }, 800);
+        }
+
+        function triggerMsg() {
+            const term = document.getElementById('terminal');
+            term.innerHTML += '<div class="text-slate-300">Action Confirmed!</div>';
+            document.getElementById('fake-msgbox').classList.remove('hidden');
+        }
+
+        function closeMsg() {
+            document.getElementById('fake-msgbox').classList.add('hidden');
+        }
+        function closeWindow() {
+            document.getElementById('fake-window').classList.add('hidden');
+            document.getElementById('terminal').innerHTML += '<div class="text-yellow-500">Process exited with code 0.</div>';
+        }
+    </script>
+</body>
+</html>

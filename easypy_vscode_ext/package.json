@@ -1,0 +1,25 @@
+{
+  "name": "easypy-lang",
+  "displayName": "Easypy Language Support",
+  "description": "Syntax highlighting for Easypy (.ep)",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "easypy",
+      "aliases": ["Easypy", "easypy"],
+      "extensions": [".ep"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "easypy",
+      "scopeName": "source.easypy",
+      "path": "./syntaxes/easypy.tmLanguage.json"
+    }]
+  }
+}

@@ -1,0 +1,67 @@
+# 🎓 Advanced Example - All Features
+
+print("═══════════════════════════════════════════")
+print("    Easypy Language - Advanced Example")
+print("═══════════════════════════════════════════\n")
+
+# 1. VARIABLES
+print("1️⃣  VARIABLES")
+name = "Alice"
+age = 25
+height = 5.8
+is_student = false
+print("Name: {name}, Age: {age}, Height: {height}m")
+print()
+
+# 2. DATA STRUCTURES
+print("2️⃣  DATA STRUCTURES")
+skills = [Python, AI, Data]
+person = {name: Alice, age: 25, city: NYC}
+print("Skills: {skills}")
+print("Person: {person}")
+print()
+
+# 3. CONDITIONALS
+print("3️⃣  CONDITIONALS")
+if = age >= 25 ---> print("✅ Senior Developer")
+else if = age >= 20 ---> print("⏳ Junior Developer")
+else = print("📚 Student")
+print()
+
+# 4. LOOPS
+print("4️⃣  LOOPS")
+loop 3 times ---> print("🔄 Loop iteration")
+print()
+
+# 5. MATH OPERATIONS
+print("5️⃣  MATH OPERATIONS")
+a = 10
+b = 5
+sum_result = a + b
+product = a * b
+print("Sum: {sum_result}")
+print("Product: {product}")
+print()
+
+# 6. STRING OPERATIONS
+print("6️⃣  STRING OPERATIONS")
+text = "hello world"
+upper_text = upper(text)
+length = len(text)
+print("Original: {text}")
+print("Upper: {upper_text}")
+print("Length: {length}")
+print()
+
+# 7. BUILT-IN FUNCTIONS
+print("7️⃣  BUILT-IN FUNCTIONS")
+numbers = [1, 5, 3, 9, 2]
+print("Numbers: {numbers}")
+print("Sum: sum({numbers})")
+print("Max: max({numbers})")
+print("Min: min({numbers})")
+print()
+
+print("═══════════════════════════════════════════")
+print("✅ Advanced example completed!")
+print("═══════════════════════════════════════════")
