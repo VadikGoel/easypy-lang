@@ -1,6 +1,0 @@
-# The "Easy" Way
-var name = "John"
-var age = 25
-var is_happy = true
-
-log name
