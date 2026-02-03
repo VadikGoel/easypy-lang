@@ -157,17 +157,32 @@ class EasypyTranspiler:
 
     def _clean_expression(self, text):
         """Helper to convert C-style syntax to Python"""
+        # Protect strings from replacement
+        # placeholders mapping: string_content -> placeholder
+        placeholders = {}
+        def replace_str(match):
+            key = f"__STR_{len(placeholders)}__"
+            placeholders[key] = match.group(0)
+            return key
+        
+        # Temporarily replace strings with placeholders
+        # Regex for double and single quotes
+        text_safe = re.sub(r'("[^"]*"|\'[^\']*\')', replace_str, text)
+
         # Operators
-        text = text.replace("===", "==")
-        text = text.replace("&&", " and ")
-        text = text.replace("||", " or ")
+        text_safe = text_safe.replace("===", "==")
+        text_safe = text_safe.replace("&&", " and ")
+        text_safe = text_safe.replace("||", " or ")
         
         # '!' but not '!='
         # Only replace if preceded by start-of-line, space, '(', '[', or '='
-        # This prevents replacing '!' inside strings like "Hello!"
-        text = re.sub(r'(?:^|(?<=[=\s(\[]))!(?!=)', 'not ', text)
+        text_safe = re.sub(r'(?:^|(?<=[=\s(\[]))!(?!=)', 'not ', text_safe)
+
+        # Restore strings
+        for key, val in placeholders.items():
+            text_safe = text_safe.replace(key, val)
         
-        # 'true'/'false'/'null' are handled by modules_real.py aliases at runtime,
+        return text_safe
         # but replacing them here can be safer for some edge cases.
         # But let's stick to the aliases to avoid accidental string replacement.
         
@@ -255,7 +270,7 @@ class EasypyTranspiler:
             if len(parts) >= 2:
                 mod = parts[1]
                 # These are actually pre-loaded objects in modules_real.py
-                preloaded_objects = ["gui", "file", "web", "system", "discord_bot", "api"]
+                preloaded_objects = ["gui", "file", "web", "system", "discord_bot", "api", "ml", "ai", "game", "db", "datetime"]
                 
                 if mod in preloaded_objects:
                     return f"{indent}# Module '{mod}' is pre-loaded"
@@ -305,6 +320,18 @@ class EasypyTranspiler:
         # 3b. Async Functions
         if raw_line.startswith("async func ") and raw_line.endswith("{"):
             defn = raw_line[11:-1].strip()
+            
+            # Auto-inject 'self' if inside a class
+            if self.context_stack and self.context_stack[-1] == 'class':
+                parts = defn.split("(", 1)
+                name = parts[0]
+                args = parts[1][:-1] if len(parts) > 1 else ""
+                
+                if args.strip():
+                    defn = f"{name}(self, {args})"
+                else:
+                    defn = f"{name}(self)"
+
             self.indent_level += 1
             self.context_stack.append('func')
             return f"{indent}async def {defn}:"
@@ -369,11 +396,18 @@ class EasypyTranspiler:
              # If it is an assignment (x = {), keep the brace, do strict Python dict open.
              # Regex checks for "var =" or "word =" pattern at end of line
              # But NOT "if x == {" (comparison)
-             # Simple heuristic: If it has "=" and not " if " or " while ", it's likely data.
+             
+             # Also check for nested dictionary structure: "key": {
+             is_dict_entry = bool(re.search(r'[\w"\']+\s*:\s*$', clean_line)) # Ends with colon
+             
              is_assignment = re.search(r'[^=!<>]=[^=]', clean_line) or clean_line.endswith("=")
              
+             # Check if current context is 'dict' (nested)
+             in_dict_context = self.context_stack and self.context_stack[-1] == 'dict'
+             
              self.indent_level += 1
-             if is_assignment:
+             
+             if is_assignment or (in_dict_context and is_dict_entry):
                  # It's a dict! Keep the brace.
                  self.context_stack.append('dict')
                  return f"{indent}{clean_line} {{"

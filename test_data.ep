@@ -1,0 +1,30 @@
+# Test Data Management and Time
+use db
+use datetime
+
+print(f"Start Time: {datetime.now()}")
+
+# 1. JSON Storage
+var user_data = {
+    "username": "admin",
+    "preferences": {
+        "color": "blue"
+    }
+}
+db.save_json("test_user.json", user_data)
+var loaded = db.load_json("test_user.json")
+print("JSON Loaded: {loaded['username']}")
+
+# 2. SQLite Database
+var conn = db.sqlite("test.db")
+# Create Table
+conn.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)")
+# Insert
+conn.execute("INSERT INTO users (name) VALUES (?)", ("Alice",))
+conn.execute("INSERT INTO users (name) VALUES (?)", ("Bob",))
+# Query
+var users = conn.execute("SELECT * FROM users")
+print("DB Users: {users}")
+
+conn.close()
+print("✅ Data tests passed")

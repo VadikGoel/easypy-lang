@@ -120,3 +120,144 @@ class _DiscordImpl:
         return {"token": token}
 
 discord_bot = _DiscordImpl()
+
+# ==================== ML (Machine Learning - Sklearn Wrapper) ====================
+class _MLImpl:
+    def model(self, type="classifier"):
+        try:
+            from sklearn.neighbors import KNeighborsClassifier
+            from sklearn.linear_model import LinearRegression
+            
+            if type == "classifier":
+                print("🔹 Created KNN Classifier")
+                return _SimpleModel(KNeighborsClassifier(n_neighbors=3))
+            elif type == "regression":
+                print("🔹 Created Linear Regression Model")
+                return _SimpleModel(LinearRegression())
+        except ImportError:
+            print("❌ Error: 'scikit-learn' not installed.")
+            return None
+            
+class _SimpleModel:
+    def __init__(self, internal):
+        self.model = internal
+        self.trained = False
+        
+    def train(self, inputs, outputs):
+        try:
+            self.model.fit(inputs, outputs)
+            self.trained = True
+            print("✅ Model trained!")
+        except Exception as e:
+            print(f"❌ Training Failed: {e}")
+
+    def predict(self, input_data):
+        if not self.trained:
+            print("⚠️ Model not trained yet!")
+            return None
+        return self.model.predict([input_data])[0]
+
+ml = _MLImpl()
+
+# ==================== AI (Simple NLP/Chat) ====================
+class _AIImpl:
+    def ask(self, prompt):
+        # Placeholder for actual LLM or API
+        responses = {
+            "hello": "Hello there! How can I help?",
+            "easypy": "Easypy is the easiest language ever!",
+            "time": f"The time is {time.strftime('%H:%M')}"
+        }
+        for k, v in responses.items():
+            if k in prompt.lower():
+                return v
+        return f"User asked: '{prompt}' (AI Backend not connected)"
+
+ai = _AIImpl()
+
+# ==================== GAME (Turtle Graphics) ====================
+class _GameImpl:
+    def window(self, width=600, height=600, title="Easypy Game"):
+        import turtle
+        s = turtle.Screen()
+        s.setup(width, height)
+        s.title(title)
+        s.bgcolor("black")
+        return s
+
+    def player(self, shape="turtle", color="lime"):
+        import turtle
+        p = turtle.Turtle()
+        p.shape(shape)
+        p.color(color)
+        p.speed(0)
+        return p
+        
+game = _GameImpl()
+
+# Helper for implicit 'ml_classifier' in examples often seen
+def ml_classifier(): return ml.model("classifier")
+
+# ==================== DATA (Database & Storage) ====================
+class _DBImpl:
+    def sqlite(self, path="database.db"):
+        import sqlite3
+        try:
+            conn = sqlite3.connect(path)
+            print(f"✓ Connected to SQLite: {path}")
+            return _SQLiteConn(conn)
+        except Exception as e:
+            print(f"❌ Connection Failed: {e}")
+            return None
+
+    def save_json(self, path, data):
+        try:
+            with open(path, 'w') as f:
+                json.dump(data, f, indent=4)
+            print(f"✓ Data saved to {path}")
+        except Exception as e:
+            print(f"❌ Save JSON Failed: {e}")
+
+    def load_json(self, path):
+        try:
+            if not os.path.exists(path):
+                return {}
+            with open(path, 'r') as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"❌ Load JSON Failed: {e}")
+            return None
+
+class _SQLiteConn:
+    def __init__(self, conn):
+        self.conn = conn
+        self.cursor = conn.cursor()
+    
+    def execute(self, query, params=()):
+        try:
+            self.cursor.execute(query, params)
+            self.conn.commit()
+            return self.cursor.fetchall()
+        except Exception as e:
+            print(f"❌ SQL Error: {e}")
+            return []
+            
+    def close(self):
+        self.conn.close()
+
+db = _DBImpl()
+
+# ==================== DATE & TIME ====================
+class _DateImpl:
+    def now(self):
+        return time.strftime("%Y-%m-%d %H:%M:%S")
+    
+    def today(self):
+        return time.strftime("%Y-%m-%d")
+
+    def timestamp(self):
+        return time.time()
+
+datetime = _DateImpl()
+
+

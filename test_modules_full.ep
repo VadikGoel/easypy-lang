@@ -1,0 +1,30 @@
+# Test AI, ML, Game Modules
+use ml
+use ai
+use game
+
+print("--- TESTING AI ---")
+print(ai.ask("Hello there"))
+print(ai.ask("What time is it?"))
+
+print("\n--- TESTING ML ---")
+# Training data: [Weight, Texture] -> Fruit (0: Apple, 1: Orange)
+var features = [[150, 0], [170, 0], [130, 1], [140, 1]]
+var labels = [1, 1, 0, 0] # 1=Orange, 0=Apple
+
+var my_model = ml.model("classifier")
+my_model.train(features, labels)
+
+# Prediction
+var result = my_model.predict([160, 0])
+if result == 1 {
+    print("Prediction: Orange 🍊")
+} else {
+    print("Prediction: Apple 🍎")
+}
+
+print("\n--- TESTING GAME (Visual) ---")
+print("Opening Game Window...")
+# Cannot fully test GUI in headless CI, but we init the object
+var p = game.player()
+print("Player created: {p}")

@@ -1,0 +1,29 @@
+# Test Async Class Method Transpilation
+import asyncio
+
+class MockBot {
+    var name = "Botty"
+
+    async func emulate_network() {
+        print(f"[{self.name}] Connecting...")
+        # Simulate wait
+        await asyncio.sleep(0.1)
+        print(f"[{self.name}] Connected!")
+    }
+
+    async func run() {
+        print("Starting...")
+        await self.emulate_network()
+        print("Finished.")
+    }
+}
+
+# Run it
+async func main() {
+    print("Test Start")
+    var bot = MockBot()
+    await bot.run()
+    print("Test End")
+}
+
+asyncio.run(main())

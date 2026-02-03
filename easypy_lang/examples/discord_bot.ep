@@ -1,0 +1,45 @@
+# Discord Bot in Easypy
+use discord
+use os
+
+# 1. Setup Intents
+var intents = discord.Intents.default()
+# Enable message content intent (Required for reading commands)
+intents.message_content = true
+
+# 2. Define Bot Class
+class MyBot(discord.Client) {
+    
+    # Event: Bot is ready
+    async func on_ready() {
+        log f"✅ Logged in as {self.user} (ID: {self.user.id})"
+        log "------"
+    }
+
+    # Event: Message received
+    async func on_message(message) {
+        # Don't let the bot reply to itself
+        if message.author.id == self.user.id {
+            return
+        }
+
+        # Command: !hello
+        if message.content.startswith("!hello") {
+            await message.channel.send("Hello from Easypy! 🐍")
+            log f"Replied to {message.author.name}"
+        }
+        
+        # Command: !ping
+        if message.content == "!ping" {
+             await message.channel.send("Pong! 🏓")
+        }
+    }
+}
+
+# 3. Initialize and Run
+log "Starting Discord Bot..."
+var client = MyBot(intents=intents)
+
+# IMPORTANT: Replace with your actual Token
+# client.run("YOUR_TOKEN_HERE")
+log "Please insert your token in the code to run!"

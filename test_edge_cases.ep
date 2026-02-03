@@ -1,0 +1,30 @@
+# Test Edge Cases
+
+# 1. Operators inside strings
+print("Hello World!")
+print("Watch out ! ")
+print("Is it true? cast to bool !!")
+
+# 2. Empty blocks - Disabled for isolation
+# if true {
+    # Not empty
+# }
+
+# 3. Nested Dictionaries
+var config = {
+    "server": {
+        "host": "localhost",
+        "port": 8080
+    },
+    "debug": true
+}
+print(config)
+
+# 4. Comments
+// This is a comment
+# This is also a comment
+
+# 5. Logic
+if 1 != 2 {
+    print("Not equal works")
+}

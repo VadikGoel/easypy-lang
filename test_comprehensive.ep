@@ -1,0 +1,93 @@
+# Comprehensive Test Suite for Easypy v2.1
+# Goal: Validate every feature from start to end.
+
+print("🔹 1. VARIABLES & TYPES")
+var name = "Easypy"
+var ver = 2.1
+var is_stable = true
+var height = 5.9
+# String interpolation (f-string sugar)
+print("Language: {name} v{ver}")
+
+print("🔹 2. OPERATORS & LOGIC")
+# Math
+var sum = 10 + 5
+var prod = 10 * 2
+# Logic replacements (&& -> and, || -> or, ! -> not)
+if is_stable && ver > 2.0 {
+    print("✅ Stable and Modern")
+}
+if !false {
+    print("✅ Negation works")
+}
+# Arrow Syntax
+if = sum == 15 ---> print("✅ One-liner Arrow works")
+
+print("🔹 3. LOOPS")
+loop 3 times {
+    print("🔄 Standard Loop")
+}
+# Short form
+loop 2 times ---> print("🔄 Arrow Loop")
+
+var count = 0
+while count < 2 {
+    print("While loop: {count}")
+    count = count + 1
+}
+
+print("🔹 4. DATA STRUCTURES (LISTS & DICTS)")
+var my_list = [1, 2, "three"]
+print("List: {my_list}")
+
+# Nested Dictionary (Critical Test)
+var config = {
+    "app": "Test",
+    "settings": {
+        "theme": "dark",
+        "retry": 3
+    }
+}
+print("Nested Dict works: {config}")
+print("Accessing key: {config['settings']['theme']}")
+
+print("🔹 5. FUNCTIONS")
+func add(a, b) {
+    return a + b
+}
+var res = add(5, 7)
+print("Function Result: {res}")
+
+print("🔹 6. CLASSES & OOP (SYNC)")
+class User {
+    var role = "admin"
+    
+    func get_info() {
+        return "Role: " + self.role
+    }
+}
+var u = User()
+print("Class Method: {u.get_info()}")
+
+print("🔹 7. ASYNC & AWAIT")
+import asyncio
+
+class NetworkBot {
+    async func connect() {
+        print("⏳ Connecting...")
+        # Await test
+        await asyncio.sleep(0.1)
+        print("✅ Connected!")
+    }
+}
+
+async func main_test() {
+    var bot = NetworkBot()
+    await bot.connect()
+    print("Async Test Finished")
+}
+
+# Run the async test
+asyncio.run(main_test())
+
+print("🎉 ALL SYSTEMS GO - FINISHED")
