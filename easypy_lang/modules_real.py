@@ -9,6 +9,15 @@ import time
 import json
 import threading
 
+# Global Aliases for Easypy -> Python compatibility
+true = True
+false = False
+null = None
+
+# Built-in String Helpers
+def upper(s): return str(s).upper()
+def lower(s): return str(s).lower()
+
 # ==================== GUI (Tkinter) ====================
 class _GUIImpl:
     def __init__(self):

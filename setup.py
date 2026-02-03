@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="easypy-lang",
-    version="2.0.1",
+    version="2.0.2",
     author="Vadik Goel",
     author_email="vadikgoel1@gmail.com",
     description="A simple, powerful language for AI, ML, and apps - No coding experience needed!",

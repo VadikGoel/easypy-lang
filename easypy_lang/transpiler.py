@@ -155,17 +155,82 @@ class EasypyTranspiler:
             
         return "".join(normalized)
 
+    def _clean_expression(self, text):
+        """Helper to convert C-style syntax to Python"""
+        # Operators
+        text = text.replace("===", "==")
+        text = text.replace("&&", " and ")
+        text = text.replace("||", " or ")
+        
+        # '!' but not '!='
+        # Only replace if preceded by start-of-line, space, '(', '[', or '='
+        # This prevents replacing '!' inside strings like "Hello!"
+        text = re.sub(r'(?:^|(?<=[=\s(\[]))!(?!=)', 'not ', text)
+        
+        # 'true'/'false'/'null' are handled by modules_real.py aliases at runtime,
+        # but replacing them here can be safer for some edge cases.
+        # But let's stick to the aliases to avoid accidental string replacement.
+        
+        return text
+
+    def _preprocess_line(self, line):
+        """Handle 'Advanced' syntax: --->, if =, implicit f-strings"""
+        
+        # 1. implicit f-strings for print/log
+        # Detect if {var} pattern exists inside quotes
+        if ('print(' in line or 'log ' in line) and '{' in line and '}' in line:
+            # Simple heuristic: inject 'f' before quotes
+            # Handle double quotes
+            line = re.sub(r'print\(\s*"', 'print(f"', line)
+            line = re.sub(r'log\s+"', 'log f"', line)
+            # Handle single quotes
+            line = re.sub(r"print\(\s*'", "print(f'", line)
+            line = re.sub(r"log\s+'", "log f'", line)
+
+        # 2. Syntax Sugar: Arrow
+        if "--->" in line:
+            line = line.replace("--->", ":")
+
+        # 3. Syntax Sugar: if =, else if =, else =
+        line = re.sub(r'^(\s*)if\s*=\s*', r'\1if ', line)
+        line = re.sub(r'^(\s*)else\s*if\s*=\s*', r'\1elif ', line)
+        # Fix: else = statement needs a colon for inline usage
+        line = re.sub(r'^(\s*)else\s*=\s*', r'\1else: ', line)
+
+        # 4. Handle "else if" without equals
+        line = line.replace("else if", "elif")
+
+        # 5. Loop syntax conversion (loop N times)
+        # Supports both "loop 3 times:" and "loop 3 times {"
+        # We replace the start with pythonic loop
+        loop_match = re.match(r'^(\s*)loop\s+(\d+)\s+times', line)
+        if loop_match:
+            indent = loop_match.group(1)
+            count = loop_match.group(2)
+            # Replace 'loop N times' with 'for _ in range(N)'
+            # We leave the suffix (colon or brace) for the next step
+            line = re.sub(r'loop\s+\d+\s+times', f'for _ in range({count})', line, count=1)
+
+        return line
+
     def _process_line(self, raw_line):
         # Indentation handling (Closing Brace)
         # Handle cases like "}" or "} else {" or "}}"
+        closing_braces = ""
         while raw_line.startswith("}"):
+            ctx = self.context_stack[-1] if self.context_stack else 'block'
+            if ctx == 'dict':
+                closing_braces += "}"
+
             self.indent_level -= 1
             if self.indent_level < 0: self.indent_level = 0
             if self.context_stack: self.context_stack.pop()
             raw_line = raw_line[1:].strip()
             
-        # If line was just "}", it is now empty. Return None to skip outputting a blank/garbage line.
+        # If line was just "}", it is now empty. 
         if not raw_line:
+            if closing_braces:
+                 return f"{'    ' * self.indent_level}{closing_braces}"
             return None
 
         # Prepare current indentation string
@@ -174,6 +239,13 @@ class EasypyTranspiler:
         # Skip comments
         if raw_line.startswith('#') or raw_line.startswith('//'):
             return f"{indent}#{raw_line}"
+
+        # === PREPROCESSOR ===
+        # Handle "Advanced" syntax (Arrow, if=, etc)
+        raw_line = self._preprocess_line(raw_line)
+
+        # Apply basic expression cleanup (&& -> and)
+        raw_line = self._clean_expression(raw_line)
 
         # === TRANSLATION RULES ===
 
@@ -249,12 +321,14 @@ class EasypyTranspiler:
             condition = raw_line[2:-1].strip()
             # Handle if(x) vs if x
             if condition.startswith("(") and condition.endswith(")"): condition = condition
+            condition = self._clean_expression(condition)
             self.indent_level += 1
             self.context_stack.append('block')
             return f"{indent}if {condition}:"
         
         if raw_line.startswith("elif") and raw_line.endswith("{"):
             condition = raw_line[4:-1].strip()
+            condition = self._clean_expression(condition)
             self.indent_level += 1
             self.context_stack.append('block')
             return f"{indent}elif {condition}:"
@@ -265,31 +339,50 @@ class EasypyTranspiler:
             return f"{indent}else:"
 
         # 6. Loops
-        loop_match = re.match(r'loop (\d+) times\s*\{', raw_line)
-        if loop_match:
-            count = loop_match.group(1)
+        # (Handled by preprocessor now, but we keep this for block context tracking if needed)
+        if raw_line.startswith("for ") and " range(" in raw_line and (raw_line.endswith("{") or raw_line.endswith(":")):
             self.indent_level += 1
             self.context_stack.append('block')
-            return f"{indent}for _ in range({count}):"
+            # If it ends with {, strip it for python
+            if raw_line.endswith("{"):
+                return f"{indent}{raw_line[:-1].strip()}:"
+            return f"{indent}{raw_line}"
         
-        if raw_line.startswith("while") and raw_line.endswith("{"):
-            condition = raw_line[5:-1].strip()
+        if raw_line.startswith("while") and (raw_line.endswith("{") or raw_line.endswith(":")):
+            clean_line = raw_line[:-1].strip() if raw_line.endswith("{") else raw_line[:-1].strip()
             self.indent_level += 1
             self.context_stack.append('block')
-            return f"{indent}while {condition}:"
+            return f"{indent}{clean_line}:"
             
-        if raw_line.startswith("for ") and raw_line.endswith("{"):
-            condition = raw_line[3:-1].strip()
+        if raw_line.startswith("for ") and (raw_line.endswith("{") or raw_line.endswith(":")):
+            clean_line = raw_line[:-1].strip() if raw_line.endswith("{") else raw_line[:-1].strip()
             self.indent_level += 1
             self.context_stack.append('block')
-            return f"{indent}for {condition}:"
+            return f"{indent}{clean_line}:"
 
         # 7. Generic Block
         if raw_line.endswith("{"):
              clean_line = raw_line[:-1].strip()
+             clean_line = self._clean_expression(clean_line)
+             
+             # CRITICAL FIX: Detect Dictionary vs Code Block
+             # If it is an assignment (x = {), keep the brace, do strict Python dict open.
+             # Regex checks for "var =" or "word =" pattern at end of line
+             # But NOT "if x == {" (comparison)
+             # Simple heuristic: If it has "=" and not " if " or " while ", it's likely data.
+             is_assignment = re.search(r'[^=!<>]=[^=]', clean_line) or clean_line.endswith("=")
+             
              self.indent_level += 1
-             self.context_stack.append('block')
-             return f"{indent}{clean_line}:"
+             if is_assignment:
+                 # It's a dict! Keep the brace.
+                 self.context_stack.append('dict')
+                 return f"{indent}{clean_line} {{"
+             else:
+                 # It's a code block! Use colon.
+                 self.context_stack.append('block')
+                 return f"{indent}{clean_line}:"
 
         # 8. Standard Line
+        # Apply cleanup to standard lines too (assignments, expressions)
+        # raw_line = self._clean_expression(raw_line) # Already done in preprocess
         return f"{indent}{raw_line}"

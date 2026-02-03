@@ -1,0 +1,18 @@
+# Test Operators and Booleans
+var happy = true
+var sad = false
+
+if (happy && !sad) {
+    log "Logic Works: Happy AND Not Sad"
+}
+
+if (happy || sad) {
+    log "Logic Works: Happy OR Sad"
+}
+
+var x = 10
+if (x === 10) {
+    log "Logic Works: Triple Equals"
+}
+
+log "All checks passed"

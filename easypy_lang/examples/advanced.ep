@@ -15,8 +15,9 @@ print()
 
 # 2. DATA STRUCTURES
 print("2️⃣  DATA STRUCTURES")
-skills = [Python, AI, Data]
-person = {name: Alice, age: 25, city: NYC}
+# Note: Use quotes for strings in lists!
+skills = ["Python", "AI", "Data"]
+person = {"name": "Alice", "age": 25, "city": "NYC"}
 print("Skills: {skills}")
 print("Person: {person}")
 print()
@@ -57,9 +58,9 @@ print()
 print("7️⃣  BUILT-IN FUNCTIONS")
 numbers = [1, 5, 3, 9, 2]
 print("Numbers: {numbers}")
-print("Sum: sum({numbers})")
-print("Max: max({numbers})")
-print("Min: min({numbers})")
+print("Sum: {sum(numbers)}")
+print("Max: {max(numbers)}")
+print("Min: {min(numbers)}")
 print()
 
 print("═══════════════════════════════════════════")
