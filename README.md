@@ -33,7 +33,21 @@ docker run -it vadikgoel/easypy-lang
 - **Python Compatible**: Runs on top of the robust Python ecosystem.
 - **Zero Configuration**: No complex build tools or compilers needed.
 
-## 🚀 Quick Start
+## � Modules (Batteries Included)
+
+| Module | Purpose | Example |
+|--------|---------|---------|
+| `gui` | Desktop Apps | `gui.create_app("My App")` |
+| `ml` | Machine Learning | `ml.model("classifier")` |
+| `ai` | AI Helpers | `ai.ask("Hello")` |
+| `db` | Database | `db.sqlite("my.db")` |
+| `game` | 2D Games | `game.window()` |
+| `web` | Internet | `web.get("https://google.com")` |
+| `file` | File I/O | `file.write("test.txt", "Hi")` |
+| `datetime`| Date & Time | `datetime.now()` |
+| `discord` | Bots | `class MyBot(discord.Client)` |
+
+## �🚀 Quick Start
 
 Create a file named `hello.easy` and write your first program:
 
