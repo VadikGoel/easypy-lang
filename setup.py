@@ -5,17 +5,17 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="easypy-lang",
-    version="2.0.2",
+    version="2.1.1",
     author="Vadik Goel",
     author_email="vadikgoel1@gmail.com",
     description="A simple, powerful language for AI, ML, and apps - No coding experience needed!",
     long_description=long_description,
     long_description_content_type="text/markdown",
+    license="MIT",
     url="https://github.com/VadikGoel/easypy-lang",
     packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Intended Audience :: Education",
         "Topic :: Software Development :: Libraries :: Application Frameworks",
